@@ -1,18 +1,32 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <vue-qr v-if="qr" :text="qr" :size="200"></vue-qr>
+    <button @click="getqr()">click</button>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import VueQr from 'vue-qr'
+import axios from 'axios'
 
 export default {
   name: 'Home',
+  data() {
+      return {
+          qr: null
+      }
+  },
+  methods: {
+      getqr () {
+          axios
+            .get('http://192.168.1.10:3200/qr', {})
+            .then(response => {
+                this.qr = response.data
+            })
+      }
+  }, 
   components: {
-    HelloWorld
+      VueQr
   }
 }
 </script>
